@@ -1,0 +1,38 @@
+# OT3Di Configuration
+
+model:
+  esm_model: "facebook/esm2_t33_650M_UR50D"
+  # embed_dim: null  # Use ESM hidden size (1280 for esm2_t33_650M)
+  num_tokens: 20 # 3Di vocabulary size
+  structure_encoder:
+    num_layers: 3
+    nhead: 8
+    dropout: 0.1
+  freeze_esm: true
+
+ot:
+  epsilon: 0.1
+  max_iters: 100
+  backend: "triton" # or "pytorch"
+  idf: "log" # options: "none", "log", "power"
+
+data:
+  split: "train" # ProstT5Dataset split
+  max_length: 512
+  num_workers: 16
+
+training:
+  lr: 1.0e-4
+  weight_decay: 0.01
+  batch_size: 32
+  epochs: 100
+  alpha: 0.5 # OT loss weight
+  gradient_accumulation_steps: 1
+  save_every_steps: 500
+
+wandb:
+  enabled: true
+  project: "ot3di-decode"
+  entity: null # optional
+  name: null # optional run name
+  log_interval: 25
